@@ -66,25 +66,63 @@ class Robot {
     }
     
     func becomeBeacon() {
+        
         beacon = true
+        CardinalityChannel.saveCurrentLocation(robot: self)
+        
+        if hearBeacon() >= 3 {
+            print("Detected 3 or more beacons")
+            if CardinalityChannel.randomPercent() < 30.00 {
+                print("Prob < 30%, \(ID) has became WALKER")
+                becomeWalker()
+            } else {
+                print("Prob > 30%, stay as BEACON")
+            }
+        } else {
+            setFoodCardinality(minFoodValue: collectMinValue().food)
+            CardinalityChannel.saveCardinality(robot: self)
+        }
     }
     
-    func collectMinValue(robot: Robot) -> (nest: Int, food: Int) {
+    
+    func hearBeacon() -> Int {
         
-        let cardinality = (robot.cardinality.nest, robot.cardinality.food)
+        var heardBeacon = 0
         
-        return cardinality
+        for key in CardinalityChannel.locations.keys {
+            let distance = CardinalityChannel.getDistance(from: self.currentLocation, to: CardinalityChannel.locations[key]!)
+            if distance <= CardinalityChannel.standDistance {
+                if distance != 0 {
+                    print("I have heard \(key)")
+                    heardBeacon += 1
+                }
+            }
+        }
+        print("Totally heard \(heardBeacon) beacons")
+        return heardBeacon
+    }
+    
+    
+    func collectMinValue() -> (nest: Int, food: Int) {
         
+        var minDistance = 10.0
+        var minValue = (nest: 0, food: 0)
+        
+        for key in CardinalityChannel.locations.keys {
+            let distance = CardinalityChannel.getDistance(from: self.currentLocation, to: CardinalityChannel.locations[key]!)
+            if distance != 0 {
+                if distance <= minDistance {
+                   minDistance = distance
+                    minValue = (CardinalityChannel.cardinalities[key])!
+                }
+            }
+        }
+        return minValue
     }
     
     func setFoodCardinality(minFoodValue: Int) {
         
         cardinality.food = minFoodValue + 1
-    }
-    
-    func setNestCardinality(minNestValue: Int) {
-        
-        cardinality.nest = minNestValue + 1
     }
     
     func nestSearch() {

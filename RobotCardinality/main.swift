@@ -2,55 +2,48 @@
 //  main.swift
 //  RobotCardinality
 //
-//  Created by Wang Shilong on 1/28/18.
+//  Created by Wang Shilong on 2/14/18.
 //  Copyright © 2018 Wang Shilong. All rights reserved.
 //
 
 import Foundation
 
 let world = World()
-let food = world.foodLocation
-let channel = CardinalityChannel()
 
-let r1 = Robot(iD: "Robot 1", startLocation: (x: 44, y: 42))
-let r2 = Robot(iD: "Robot 2", startLocation: (x: 0, y: 0))
+let r1 = Robot(iD: "R1", startLocation: (x: 6, y: 8))
+let r2 = Robot(iD: "R2", startLocation: (x: 12, y: 16))
+let r3 = Robot(iD: "R3", startLocation: (x: 18, y: 24))
+let r4 = Robot(iD: "R4", startLocation: (x: 24, y: 32))
 
+let r5 = Robot(iD: "R5", startLocation: (x: 27, y: 32))
+let r6 = Robot(iD: "R6", startLocation: (x: 24, y: 40))
 
-print("|||||||||||| TEST START |||||||||||| \n")
+CardinalityChannel.saveCurrentLocation(robot: r5)
+CardinalityChannel.saveCurrentLocation(robot: r6)
 
-print("Food Location: \(food) \n")
+r5.cardinality = (nest: 0, food: 1)
+r6.cardinality = (nest: 0, food: 1)
 
-print("<TEST 1: r1 go to food location and become BEACON, then set food cardi value to 1> \n")
-var dist = r1.cardinalityChannel.getDistance(from: r1.currentLocation, to: food)
-r1.becomeBeacon()
-r1.setFoodCardinality(minFoodValue: 0)
-
-//update r1 's location to channel
-channel.saveCurrentLocation(id: "r1", currentLocation: r1.currentLocation)
-r1.printStatus()
+CardinalityChannel.saveCardinality(robot: r5)
+CardinalityChannel.saveCardinality(robot: r6)
 
 
-print("<TEST 2: r2 go looking for r1, and stop around r1 to become BEACON, then set food cardi value> \n")
-repeat {
-    
-    r2.moveTopRight()
-    dist = r2.cardinalityChannel.getDistance(from: r2.currentLocation, to: r1.currentLocation)
-    
-    // update r2 's location to channel
-    channel.saveCurrentLocation(id: "r2", currentLocation: r2.currentLocation)
-    print(r2.currentLocation)
-    
-} while (dist != channel.standDistance)
 
-print("Robot 2: 1 BEACON around me \n")
+
+r3.becomeBeacon()
+r3.printStatus()
+
 r2.becomeBeacon()
-var minCardinality = r2.collectMinValue(robot: r1)
-r2.setFoodCardinality(minFoodValue: minCardinality.food)
 r2.printStatus()
 
-print(channel.locations)
+r1.becomeBeacon()
+r1.printStatus()
 
+r4.becomeBeacon()
+r4.printStatus()
 
+print(CardinalityChannel.locations)
+print(CardinalityChannel.cardinalities)
 
 
 

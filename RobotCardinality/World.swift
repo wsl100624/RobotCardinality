@@ -15,7 +15,7 @@ class World {
     let width = 100
     let length = 100
     
-    let foodLocation = (x: 50, y: 50)
+    let foodLocation = (x: 30, y: 40)
     let nestLocation = (x: 0, y: 0)
     
 }

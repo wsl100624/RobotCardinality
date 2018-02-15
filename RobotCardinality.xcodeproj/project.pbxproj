@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B4E3C4F2201E1E6C0033AE33 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E3C4F1201E1E6C0033AE33 /* main.swift */; };
+		B4117F432035420400D77820 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4117F422035420400D77820 /* main.swift */; };
+		B4E3C4F2201E1E6C0033AE33 /* main1.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E3C4F1201E1E6C0033AE33 /* main1.swift */; };
 		B4E3C4F9201E1E880033AE33 /* Robot.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E3C4F8201E1E880033AE33 /* Robot.swift */; };
 		B4E3C4FB201E1E9F0033AE33 /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E3C4FA201E1E9F0033AE33 /* World.swift */; };
 		B4E3C4FD201E1EBB0033AE33 /* CardinalityChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E3C4FC201E1EBB0033AE33 /* CardinalityChannel.swift */; };
@@ -26,8 +27,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B4117F422035420400D77820 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		B4E3C4EE201E1E6C0033AE33 /* RobotCardinality */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RobotCardinality; sourceTree = BUILT_PRODUCTS_DIR; };
-		B4E3C4F1201E1E6C0033AE33 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		B4E3C4F1201E1E6C0033AE33 /* main1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main1.swift; sourceTree = "<group>"; };
 		B4E3C4F8201E1E880033AE33 /* Robot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Robot.swift; sourceTree = "<group>"; };
 		B4E3C4FA201E1E9F0033AE33 /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		B4E3C4FC201E1EBB0033AE33 /* CardinalityChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardinalityChannel.swift; sourceTree = "<group>"; };
@@ -63,10 +65,11 @@
 		B4E3C4F0201E1E6C0033AE33 /* RobotCardinality */ = {
 			isa = PBXGroup;
 			children = (
-				B4E3C4F1201E1E6C0033AE33 /* main.swift */,
+				B4117F422035420400D77820 /* main.swift */,
 				B4E3C4F8201E1E880033AE33 /* Robot.swift */,
 				B4E3C4FC201E1EBB0033AE33 /* CardinalityChannel.swift */,
 				B4E3C4FA201E1E9F0033AE33 /* World.swift */,
+				B4E3C4F1201E1E6C0033AE33 /* main1.swift */,
 			);
 			path = RobotCardinality;
 			sourceTree = "<group>";
@@ -130,9 +133,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B4E3C4FD201E1EBB0033AE33 /* CardinalityChannel.swift in Sources */,
+				B4117F432035420400D77820 /* main.swift in Sources */,
 				B4E3C4FB201E1E9F0033AE33 /* World.swift in Sources */,
 				B4E3C4F9201E1E880033AE33 /* Robot.swift in Sources */,
-				B4E3C4F2201E1E6C0033AE33 /* main.swift in Sources */,
+				B4E3C4F2201E1E6C0033AE33 /* main1.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
