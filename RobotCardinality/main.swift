@@ -8,6 +8,8 @@
 
 import Foundation
 
+
+
 let world = World()
 
 let r1 = Robot(iD: "R1", startLocation: (x: 6, y: 8))
@@ -27,23 +29,41 @@ r6.cardinality = (nest: 0, food: 1)
 CardinalityChannel.saveCardinality(robot: r5)
 CardinalityChannel.saveCardinality(robot: r6)
 
+let queue1 = DispatchQueue(label: "R1")
+let queue2 = DispatchQueue(label: "R2")
+let queue3 = DispatchQueue(label: "R3")
+let queue4 = DispatchQueue(label: "R4")
+
+queue1.async {
+    r1.becomeBeacon()
+}
+
+queue2.async {
+    r2.becomeBeacon()
+}
+
+queue4.async {
+    r4.becomeBeacon()
+}
+
+queue3.async {
+    r3.becomeBeacon()
+    
+    DispatchQueue.global().async {
+        print("|||||||| All Robot's location |||||||||")
+        print(CardinalityChannel.locations)
+    }
+    DispatchQueue.global().async {
+        print("|||||||| All Robot's cardinalities |||||||||")
+        print(CardinalityChannel.cardinalities)
+    }
+}
+
+
+print("")
 
 
 
-r3.becomeBeacon()
-r3.printStatus()
-
-r2.becomeBeacon()
-r2.printStatus()
-
-r1.becomeBeacon()
-r1.printStatus()
-
-r4.becomeBeacon()
-r4.printStatus()
-
-print(CardinalityChannel.locations)
-print(CardinalityChannel.cardinalities)
 
 
 

@@ -14,7 +14,10 @@ class Robot {
     var currentLocation : (x: Int, y: Int)
     var cardinality = (nest: 0, food: 0)
     var beacon = false
+    var nearbyRobot = [String]()
+    var nearbyRobotWithDistance = Dictionary<String, Double>()
     let cardinalityChannel = CardinalityChannel()
+    
     
     
     init(iD: String, startLocation : (x: Int, y: Int)) {
@@ -66,7 +69,7 @@ class Robot {
     }
     
     func becomeBeacon() {
-        
+        print("|||||||| \(ID) Status |||||||||")
         beacon = true
         CardinalityChannel.saveCurrentLocation(robot: self)
         
@@ -78,10 +81,18 @@ class Robot {
             } else {
                 print("Prob > 30%, stay as BEACON")
             }
-        } else {
+        } else if hearBeacon() > 1 {
             setFoodCardinality(minFoodValue: collectMinValue().food)
-            CardinalityChannel.saveCardinality(robot: self)
+            
+            
+        } else if hearBeacon() == 1 {
+            let key = nearbyRobot[0]
+            setFoodCardinality(minFoodValue: CardinalityChannel.cardinalities[key]!.food)
+        } else {
+           print("No beacon around me")
         }
+        
+        CardinalityChannel.saveCardinality(robot: self)
     }
     
     
@@ -93,31 +104,23 @@ class Robot {
             let distance = CardinalityChannel.getDistance(from: self.currentLocation, to: CardinalityChannel.locations[key]!)
             if distance <= CardinalityChannel.standDistance {
                 if distance != 0 {
-                    print("I have heard \(key)")
+                    print("\(ID) have heard \(key)")
+                    nearbyRobot.append(key)
+                    nearbyRobotWithDistance.updateValue(distance, forKey: key)
                     heardBeacon += 1
                 }
             }
         }
-        print("Totally heard \(heardBeacon) beacons")
+        print("\(ID) Totally heard \(heardBeacon) beacons")
         return heardBeacon
     }
     
     
     func collectMinValue() -> (nest: Int, food: Int) {
         
-        var minDistance = 10.0
-        var minValue = (nest: 0, food: 0)
+        let nearestRobot = nearbyRobotWithDistance.min {a, b in a.value < b.value}
+        return CardinalityChannel.cardinalities[nearestRobot!.key]!
         
-        for key in CardinalityChannel.locations.keys {
-            let distance = CardinalityChannel.getDistance(from: self.currentLocation, to: CardinalityChannel.locations[key]!)
-            if distance != 0 {
-                if distance <= minDistance {
-                   minDistance = distance
-                    minValue = (CardinalityChannel.cardinalities[key])!
-                }
-            }
-        }
-        return minValue
     }
     
     func setFoodCardinality(minFoodValue: Int) {
@@ -135,12 +138,11 @@ class Robot {
     }
     
     func printStatus() {
-        print("|||||||| \(ID) Status |||||||||")
         
         if beacon {
-            print("BEACON")
+            print("Has became BEACON")
         } else {
-            print("WALKER")
+            print("Has became WALKER")
         }
         
         print("My location: \(currentLocation)")
