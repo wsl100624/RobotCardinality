@@ -13,6 +13,8 @@ class CardinalityChannel {
     static var locations = Dictionary<String, (x: Int, y: Int)>()
     static var cardinalities = Dictionary<String, (nest: Int, food: Int)>()
     static let standDistance = 10.0
+    static let foodDetectedDistance = 2.0
+    
     
     
     static func getDistance(from currentLocation : (x: Int, y: Int), to targetLocation : (x: Int, y: Int)) -> Double {

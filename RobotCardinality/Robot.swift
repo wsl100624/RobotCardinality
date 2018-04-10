@@ -18,9 +18,7 @@ class Robot {
     var nearbyRobotWithDistance = Dictionary<String, Double>()
     let cardinalityChannel = CardinalityChannel()
     
-    let foodLocation = World().foodLocation
-    
-    
+    let foodLocations = World().foodLocations
     
     init(iD: String, startLocation : (x: Int, y: Int)) {
         ID = iD
@@ -67,61 +65,67 @@ class Robot {
     }
     
     func becomeWalker() {
+        print("Start exploring")
         beacon = false
         repeat {
             let randomNum = CardinalityChannel.randomPercent()
             switch randomNum {
+                
             case 1..<25.00:
-                moveTopLeft()
-                if isOutOfBound() {
-                    moveBottomRight()
-                    print("Out of Bound!")
-                    continue
-                }
-            case 25.00..<50.00:
-                moveBottomLeft()
-                if isOutOfBound() {
-                    moveTopRight()
-                    print("Out of Bound!")
-                    continue
-                }
-            case 50.00..<75.00:
-                moveTopRight()
-                if isOutOfBound() {
-                    moveBottomLeft()
-                    print("Out of Bound!")
-                    continue
-                }
-            default:
-                moveBottomRight()
-                if isOutOfBound() {
+                repeat {
+                    printCurrentLocation()
                     moveTopLeft()
-                    print("Out of Bound!")
-                    continue
-                }
-            }
-            
-            print(currentLocation)
-            
-            for location in foodLocation {
-                if location == currentLocation {
-                    print("Food Location: \(location)")
-                    print("\(ID) found the FOOD! Becoming BEACON!")
-                    beacon = true
-                }
+                    if isOutOfBound() {
+                        moveBottomRight()
+                        continue
+                    }
+                } while !foodSearch()
+                
+            case 25.00..<50.00:
+                repeat {
+                    printCurrentLocation()
+                    moveBottomLeft()
+                    if isOutOfBound() {
+                        moveTopRight()
+                        continue
+                    }
+                } while !foodSearch()
+                
+            case 50.00..<75.00:
+                repeat {
+                    printCurrentLocation()
+                    moveTopRight()
+                    if isOutOfBound() {
+                       moveBottomLeft()
+                        continue
+                    }
+                } while !foodSearch()
+                
+            default:
+                repeat {
+                    printCurrentLocation()
+                    moveBottomRight()
+                    if isOutOfBound() {
+                        moveTopLeft()
+                        continue
+                    }
+                } while !foodSearch()
             }
         
+            becomeBeacon()
+            
+            
         } while !beacon
         
-        becomeBeacon()
     }
     
     func becomeBeacon() {
-        print("|||||||| \(ID) Status |||||||||")
+        
         beacon = true
         CardinalityChannel.saveCurrentLocation(robot: self)
         let beaconHeard = hearBeacon()
         
+        print("\(ID) has became BEACON \n")
         if beaconHeard >= 3 {
             print("Detected 3 or more beacons")
             if CardinalityChannel.randomPercent() < 30.00 {
@@ -138,7 +142,7 @@ class Robot {
             let key = nearbyRobot[0]
             setFoodCardinality(minFoodValue: CardinalityChannel.cardinalities[key]!.food)
         } else {
-           print("No beacon around me")
+           setFoodCardinality(minFoodValue: 0)
         }
         
         CardinalityChannel.saveCardinality(robot: self)
@@ -181,9 +185,22 @@ class Robot {
         print("Getting back to nest! \n")
     }
     
-    func foodSearch() {
-        print("Looking for food \n")
+    func foodSearch() -> Bool {
+        var didFoundFood = false
+        for key in foodLocations.keys {
+            let distance = CardinalityChannel.getDistance(from: self.currentLocation, to: foodLocations[key]!)
+            if distance <= CardinalityChannel.foodDetectedDistance {
+                if distance != 0 {
+                    printCurrentLocation()
+                    print("\(ID) found the FOOD!")
+                    print("Food: \(foodLocations[key]!)")
+                    print("Distance between \(ID) and Food: \(distance)")
+                    didFoundFood = true
+                }
+            }
+        }
         
+        return didFoundFood
     }
     
     func isOutOfBound() -> Bool {
@@ -192,20 +209,27 @@ class Robot {
         let Y = World().length
         
         if currentLocation.x > X || currentLocation.x < 0 {
+            print("Reach the bound, changing direction")
             return true
         } else if currentLocation.y > Y || currentLocation.y < 0 {
+            print("Reach the bound, changing direction")
             return true
         } else {
             return false
         }
     }
     
+    func printCurrentLocation() {
+        print(currentLocation)
+    }
+    
     func printStatus() {
         
+        print("|||||||| \(ID) Status |||||||||")
         if beacon {
-            print("Has became BEACON")
+            print("\(ID) has became BEACON")
         } else {
-            print("Has became WALKER")
+            print("\(ID) has became WALKER")
         }
         
         print("My location: \(currentLocation)")

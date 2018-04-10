@@ -15,7 +15,7 @@ class World {
     let width = 15
     let length = 15
     
-    let foodLocation = [(x: 10, y: 10),(x: 5, y: 6),(x: 1, y: 3),(x: 7, y: 8),(x: 6, y: 2)]
+    let foodLocations = ["f1" : (x: 10, y: 10), "f2" : (x: 5, y: 6), "f3" : (x: 1, y: 3), "f4" : (x: 7, y: 8), "f5" : (x: 6, y: 2)]
     let nestLocation = (x: 0, y: 0)
     
 }

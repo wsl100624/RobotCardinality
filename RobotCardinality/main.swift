@@ -13,8 +13,9 @@ import Foundation
 let world = World()
 
 let r1 = Robot(iD: "R1", startLocation: (x: 5, y: 5))
-
+r1.printStatus()
 r1.becomeWalker()
+r1.printStatus()
 
 //let r2 = Robot(iD: "R2", startLocation: (x: 12, y: 16))
 //let r3 = Robot(iD: "R3", startLocation: (x: 18, y: 24))
