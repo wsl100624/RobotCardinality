@@ -12,10 +12,10 @@ class World {
     
     //Area Configure
     
-    let width = 100
-    let length = 100
+    let width = 15
+    let length = 15
     
-    let foodLocation = (x: 30, y: 40)
+    let foodLocation = [(x: 10, y: 10),(x: 5, y: 6),(x: 1, y: 3),(x: 7, y: 8),(x: 6, y: 2)]
     let nestLocation = (x: 0, y: 0)
     
 }

@@ -18,6 +18,8 @@ class Robot {
     var nearbyRobotWithDistance = Dictionary<String, Double>()
     let cardinalityChannel = CardinalityChannel()
     
+    let foodLocation = World().foodLocation
+    
     
     
     init(iD: String, startLocation : (x: Int, y: Int)) {
@@ -66,14 +68,61 @@ class Robot {
     
     func becomeWalker() {
         beacon = false
+        repeat {
+            let randomNum = CardinalityChannel.randomPercent()
+            switch randomNum {
+            case 1..<25.00:
+                moveTopLeft()
+                if isOutOfBound() {
+                    moveBottomRight()
+                    print("Out of Bound!")
+                    continue
+                }
+            case 25.00..<50.00:
+                moveBottomLeft()
+                if isOutOfBound() {
+                    moveTopRight()
+                    print("Out of Bound!")
+                    continue
+                }
+            case 50.00..<75.00:
+                moveTopRight()
+                if isOutOfBound() {
+                    moveBottomLeft()
+                    print("Out of Bound!")
+                    continue
+                }
+            default:
+                moveBottomRight()
+                if isOutOfBound() {
+                    moveTopLeft()
+                    print("Out of Bound!")
+                    continue
+                }
+            }
+            
+            print(currentLocation)
+            
+            for location in foodLocation {
+                if location == currentLocation {
+                    print("Food Location: \(location)")
+                    print("\(ID) found the FOOD! Becoming BEACON!")
+                    beacon = true
+                }
+            }
+        
+        } while !beacon
+        
+        becomeBeacon()
     }
     
     func becomeBeacon() {
         print("|||||||| \(ID) Status |||||||||")
         beacon = true
         CardinalityChannel.saveCurrentLocation(robot: self)
+        let beaconHeard = hearBeacon()
         
-        if hearBeacon() >= 3 {
+        if beaconHeard >= 3 {
             print("Detected 3 or more beacons")
             if CardinalityChannel.randomPercent() < 30.00 {
                 print("Prob < 30%, \(ID) has became WALKER")
@@ -81,11 +130,11 @@ class Robot {
             } else {
                 print("Prob > 30%, stay as BEACON")
             }
-        } else if hearBeacon() > 1 {
+        } else if beaconHeard > 1 {
             setFoodCardinality(minFoodValue: collectMinValue().food)
             
             
-        } else if hearBeacon() == 1 {
+        } else if beaconHeard == 1 {
             let key = nearbyRobot[0]
             setFoodCardinality(minFoodValue: CardinalityChannel.cardinalities[key]!.food)
         } else {
@@ -135,6 +184,20 @@ class Robot {
     func foodSearch() {
         print("Looking for food \n")
         
+    }
+    
+    func isOutOfBound() -> Bool {
+        
+        let X = World().width
+        let Y = World().length
+        
+        if currentLocation.x > X || currentLocation.x < 0 {
+            return true
+        } else if currentLocation.y > Y || currentLocation.y < 0 {
+            return true
+        } else {
+            return false
+        }
     }
     
     func printStatus() {
