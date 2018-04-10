@@ -20,6 +20,8 @@ class Robot {
     
     let foodLocations = World().foodLocations
     
+    var didFoundFood = false
+    
     init(iD: String, startLocation : (x: Int, y: Int)) {
         ID = iD
         currentLocation = startLocation
@@ -77,9 +79,10 @@ class Robot {
                     moveTopLeft()
                     if isOutOfBound() {
                         moveBottomRight()
-                        continue
+                        break
                     }
                 } while !foodSearch()
+   
                 
             case 25.00..<50.00:
                 repeat {
@@ -87,9 +90,10 @@ class Robot {
                     moveBottomLeft()
                     if isOutOfBound() {
                         moveTopRight()
-                        continue
+                        break
                     }
                 } while !foodSearch()
+       
                 
             case 50.00..<75.00:
                 repeat {
@@ -97,9 +101,11 @@ class Robot {
                     moveTopRight()
                     if isOutOfBound() {
                        moveBottomLeft()
-                        continue
+                        break
                     }
+                  
                 } while !foodSearch()
+                
                 
             default:
                 repeat {
@@ -107,15 +113,22 @@ class Robot {
                     moveBottomRight()
                     if isOutOfBound() {
                         moveTopLeft()
-                        continue
+                        break
                     }
+                    
                 } while !foodSearch()
+     
+            }
+            
+            if didFoundFood {
+                beacon = true
+            } else {
+                continue
             }
         
-            becomeBeacon()
-            
-            
         } while !beacon
+        
+        becomeBeacon()
         
     }
     
@@ -186,7 +199,7 @@ class Robot {
     }
     
     func foodSearch() -> Bool {
-        var didFoundFood = false
+        
         for key in foodLocations.keys {
             let distance = CardinalityChannel.getDistance(from: self.currentLocation, to: foodLocations[key]!)
             if distance <= CardinalityChannel.foodDetectedDistance {

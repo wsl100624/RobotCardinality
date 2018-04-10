@@ -12,7 +12,7 @@ import Foundation
 
 let world = World()
 
-let r1 = Robot(iD: "R1", startLocation: (x: 5, y: 5))
+let r1 = Robot(iD: "R1", startLocation: world.nestLocation)
 r1.printStatus()
 r1.becomeWalker()
 r1.printStatus()
