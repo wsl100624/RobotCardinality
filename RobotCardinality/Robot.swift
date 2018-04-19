@@ -83,7 +83,6 @@ class Robot {
                     }
                 } while !foodSearch()
    
-                
             case 25.00..<50.00:
                 repeat {
                     printCurrentLocation()
@@ -135,10 +134,11 @@ class Robot {
     func becomeBeacon() {
         
         beacon = true
+        print("\(ID) has became BEACON \n")
         CardinalityChannel.saveCurrentLocation(robot: self)
+        
         let beaconHeard = hearBeacon()
         
-        print("\(ID) has became BEACON \n")
         if beaconHeard >= 3 {
             print("Detected 3 or more beacons")
             if CardinalityChannel.randomPercent() < 30.00 {
